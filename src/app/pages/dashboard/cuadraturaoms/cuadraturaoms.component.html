@@ -1,8 +1,20 @@
 <div class="container-fluid">
-  <p *ngFor="let alert of alerts">
-    <ngb-alert [type]="alert.type" (closed)="close(alert)">{{ alert.message }}</ngb-alert>
-  </p>
-  <p>
-    <button type="button" class="btn btn-primary" (click)="reset()">Reset</button>
-  </p>
+  <div class="container text-center">
+    <p>
+      <ngb-alert >
+        <strong>Cuadratura Oms:</strong> Recuerde realizar la cuadratura de ordenes diariamente.
+      </ngb-alert>
+    </p>
+    <p>Fecha Cuadratura</p>
+
+    <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>
+
+    <hr />
+
+    <button class="btn btn-sm btn-outline-primary me-2" (click)="selectToday()">Select Today</button>
+    <button class="btn btn-sm btn-outline-primary me-2" (click)="dp.navigateTo()">To current month</button>
+    <button class="btn btn-sm btn-outline-primary me-2" (click)="dp.navigateTo({year: 2013, month: 2})">To Feb 2013</button>
+    <hr />
+  </div>
+
 </div>
