@@ -20,7 +20,7 @@ export interface Solicitud {
   styleUrls: ['./cuadraturaoms.component.scss'],
   providers: [NgbAlertConfig],
 })
-export class CuadraturaomsComponent
+export class CuadraturaomsComponent implements OnInit
 {
   displayedColumns: string[] = [
     'id',
@@ -30,7 +30,9 @@ export class CuadraturaomsComponent
   ];
 
   solicitud: Solicitud[] = [];
+  solicitud2: Solicitud[] = [];
   dataSource: any;
+  dataSource2: any;
   model: NgbDateStruct | undefined;
   date: { year: number; month: number; } | undefined;
 
@@ -43,13 +45,21 @@ export class CuadraturaomsComponent
     // customize default values of alerts used by this component tree
     this.salesforceService.lista().subscribe((data) => {
       data.map((data: any) => {
-        this.solicitud.push(data[0]);
+        this.solicitud.push(data);
         this.dataSource = this.solicitud;
+      });
+    });
+    this.salesforceService.listaProductos().subscribe((data) => {
+      data.map((data: any) => {
+        this.solicitud2.push(data);
+        this.dataSource2 = this.solicitud2;
+        console.log(this.dataSource2)
       });
     });
     alertConfig.type = 'success';
     alertConfig.dismissible = false;
   }
+  ngOnInit(): void {}
   selectToday() {
     this.model = this.calendar.getToday();
   }
