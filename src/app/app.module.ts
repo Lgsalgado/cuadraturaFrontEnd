@@ -9,6 +9,8 @@ import { NopageFoundComponent } from './nopage-found/nopage-found.component';
 import { PagesModule } from './pages/pages.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {NgbAlert} from "@ng-bootstrap/ng-bootstrap";
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {MatTableModule} from "@angular/material/table";
 
 
 @NgModule({
@@ -24,9 +26,12 @@ import {NgbAlert} from "@ng-bootstrap/ng-bootstrap";
     AuthModule,
     PagesModule,
     BrowserAnimationsModule,
-    NgbAlert
+    NgbAlert,
+    HttpClientModule,
+    MatTableModule
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
