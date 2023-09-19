@@ -5,6 +5,7 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 import { PagesComponent } from './pages.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
+import {CanvasJSAngularChartsModule} from "@canvasjs/angular-charts";
 
 
 
@@ -14,11 +15,12 @@ import { SharedModule } from '../shared/shared.module';
     UsuariosComponent,
     PagesComponent,
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    SharedModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        SharedModule,
+        CanvasJSAngularChartsModule
+    ],
   exports: [
     DashboardComponent,
     UsuariosComponent,

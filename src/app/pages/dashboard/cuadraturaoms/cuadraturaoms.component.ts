@@ -5,6 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import {SalesforceomsService} from "../../../services/cuadratura/salesforceoms.service";
 import {MatTableModule} from "@angular/material/table";
+import {NgIconComponent} from "@ng-icons/core";
+import {provideIcons } from '@ng-icons/core';
+import { featherAirplay } from '@ng-icons/feather-icons';
+import { heroUsers,heroWifi } from '@ng-icons/heroicons/outline';
+import { Router } from '@angular/router';
+import Swal from "sweetalert2";
+import {CommonModule} from "@angular/common";
+
 export interface Solicitud {
   id: number;
   username: string;
@@ -16,9 +24,16 @@ export interface Solicitud {
   standalone: true,
   templateUrl: './cuadraturaoms.component.html',
   imports: [NgFor, NgbAlertModule,
-    NgbDatepickerModule, FormsModule, JsonPipe, DatePipe, MatTableModule],
+    NgbDatepickerModule,
+    FormsModule,
+    JsonPipe,
+    DatePipe,
+    MatTableModule,
+    NgIconComponent,
+    CommonModule],
   styleUrls: ['./cuadraturaoms.component.scss'],
   providers: [NgbAlertConfig],
+  viewProviders: [provideIcons({ featherAirplay, heroUsers,heroWifi})]
 })
 export class CuadraturaomsComponent implements OnInit
 {
@@ -27,41 +42,65 @@ export class CuadraturaomsComponent implements OnInit
     'user',
     'name',
     'email',
+    'actionsColumn'
   ];
 
   solicitud: Solicitud[] = [];
-  solicitud2: Solicitud[] = [];
   dataSource: any;
-  dataSource2: any;
+  aux:any;
   model: NgbDateStruct | undefined;
   date: { year: number; month: number; } | undefined;
+  err: any;
 
   @Input() public alerts: Array<string> = [];
 
   constructor(
     alertConfig: NgbAlertConfig,
+    public router: Router,
     private calendar: NgbCalendar,
     private salesforceService: SalesforceomsService) {
     // customize default values of alerts used by this component tree
-    this.salesforceService.lista().subscribe((data) => {
+    /*this.salesforceService.lista().subscribe((data) => {
       data.map((data: any) => {
         this.solicitud.push(data);
         this.dataSource = this.solicitud;
       });
-    });
-    this.salesforceService.listaProductos().subscribe((data) => {
-      data.map((data: any) => {
-        this.solicitud2.push(data);
-        this.dataSource2 = this.solicitud2;
-        console.log(this.dataSource2)
-      });
-    });
+    });*/
     alertConfig.type = 'success';
     alertConfig.dismissible = false;
   }
-  ngOnInit(): void {}
-  selectToday() {
+  ngOnInit(): void {
     this.model = this.calendar.getToday();
+    //console.log(this.model.year)
+  }
+
+
+
+
+  //Realizar cuadratura
+  view(): void {
+    this.salesforceService.lista().subscribe(
+      (data) => {
+        data.map((data: any) => {
+          this.solicitud.push(data);
+          this.dataSource = this.solicitud;
+        });
+        this.solicitud=this.aux;
+      },
+      (error) => {
+        this.err = error;
+        Swal.fire({
+          title: 'Error!',
+          text: this.err.message+" status: "+this.err.status,
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        })
+
+      },
+      () => {
+        this.router.navigate([`dashboard/cuadraturaoms/`]);
+      }
+    );
   }
 }
 
