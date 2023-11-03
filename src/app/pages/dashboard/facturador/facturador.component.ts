@@ -3,7 +3,7 @@ import {DatePipe, NgFor} from "@angular/common";
 import {NgbAlertConfig,NgbAlertModule,NgbDateStruct, NgbCalendar, NgbDatepickerModule} from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
-import {SalesforceomsService} from "../../../services/cuadratura/salesforceoms.service";
+import {orden, SalesforceomsService} from "../../../services/cuadratura/salesforceoms.service";
 import {MatTableModule} from "@angular/material/table";
 import {NgIconComponent} from "@ng-icons/core";
 import {provideIcons } from '@ng-icons/core';
@@ -12,7 +12,6 @@ import { heroUsers,heroWifi } from '@ng-icons/heroicons/outline';
 import { Router } from '@angular/router';
 import Swal from "sweetalert2";
 import {CommonModule} from "@angular/common";
-
 export interface Solicitud {
   id: number;
   username: string;
@@ -20,9 +19,10 @@ export interface Solicitud {
   email: string;
 }
 @Component({
-  selector: 'app-cuadraturaoms',
+  selector: 'app-facturador',
   standalone: true,
-  templateUrl: './cuadraturaoms.component.html',
+  templateUrl: './facturador.component.html',
+  styleUrls: ['./facturador.component.scss'],
   imports: [NgFor, NgbAlertModule,
     NgbDatepickerModule,
     FormsModule,
@@ -31,12 +31,11 @@ export interface Solicitud {
     MatTableModule,
     NgIconComponent,
     CommonModule],
-  styleUrls: ['./cuadraturaoms.component.scss'],
   providers: [NgbAlertConfig],
   viewProviders: [provideIcons({ featherAirplay, heroUsers,heroWifi})]
 })
-export class CuadraturaomsComponent implements OnInit
-{
+
+export class FacturadorComponent implements OnInit{
   displayedColumns: string[] = [
     'id',
     'user',
@@ -47,6 +46,7 @@ export class CuadraturaomsComponent implements OnInit
 
   solicitud: Solicitud[] = [];
   dataSource: any;
+
   aux:any;
   model: NgbDateStruct | undefined;
   date: { year: number; month: number; } | undefined;
@@ -73,12 +73,9 @@ export class CuadraturaomsComponent implements OnInit
     this.model = this.calendar.getToday();
     //console.log(this.model.year)
   }
-
-
-
-
   //Realizar cuadratura
   view(): void {
+    console.log(orden)
     this.salesforceService.lista().subscribe(
       (data) => {
         data.map((data: any) => {
@@ -103,5 +100,3 @@ export class CuadraturaomsComponent implements OnInit
     );
   }
 }
-
-
