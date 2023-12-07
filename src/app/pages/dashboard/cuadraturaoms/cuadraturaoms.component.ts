@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DatePipe, NgFor} from "@angular/common";
 import {NgbAlertConfig,NgbAlertModule,NgbDateStruct, NgbCalendar, NgbDatepickerModule} from "@ng-bootstrap/ng-bootstrap";
-import { FormsModule } from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, Validators} from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import {SalesforceomsService} from "../../../services/cuadratura/salesforceoms.service";
 import {MatTableModule} from "@angular/material/table";
@@ -12,6 +12,8 @@ import { heroUsers,heroWifi } from '@ng-icons/heroicons/outline';
 import { Router } from '@angular/router';
 import Swal from "sweetalert2";
 import {CommonModule} from "@angular/common";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {isInteger} from "@ng-bootstrap/ng-bootstrap/util/util";
 
 export interface Solicitud {
   id: number;
@@ -30,21 +32,18 @@ export interface Solicitud {
     DatePipe,
     MatTableModule,
     NgIconComponent,
-    CommonModule],
+    CommonModule, MatFormFieldModule],
   styleUrls: ['./cuadraturaoms.component.scss'],
   providers: [NgbAlertConfig],
   viewProviders: [provideIcons({ featherAirplay, heroUsers,heroWifi})]
 })
-export class CuadraturaomsComponent implements OnInit
-{
+export class CuadraturaomsComponent implements OnInit {
   displayedColumns: string[] = [
     'id',
-    'user',
-    'name',
-    'email',
     'actionsColumn'
   ];
-
+  miNumero: number =0;
+  solicitudForm: FormGroup;
   solicitud: Solicitud[] = [];
   dataSource: any;
   aux:any;
@@ -58,14 +57,12 @@ export class CuadraturaomsComponent implements OnInit
     alertConfig: NgbAlertConfig,
     public router: Router,
     private calendar: NgbCalendar,
-    private salesforceService: SalesforceomsService) {
-    // customize default values of alerts used by this component tree
-    /*this.salesforceService.lista().subscribe((data) => {
-      data.map((data: any) => {
-        this.solicitud.push(data);
-        this.dataSource = this.solicitud;
-      });
-    });*/
+    private salesforceService: SalesforceomsService,
+    private fb: FormBuilder) {
+    this.solicitudForm = this.fb.group({
+      salesforce: ['', [Validators.required]],
+      oms: ['', [Validators.required]],
+    });
     alertConfig.type = 'success';
     alertConfig.dismissible = false;
   }
@@ -77,31 +74,54 @@ export class CuadraturaomsComponent implements OnInit
 
 
 
-  //Realizar cuadratura
-  view(): void {
-    this.salesforceService.lista().subscribe(
-      (data) => {
-        data.map((data: any) => {
-          this.solicitud.push(data);
-          this.dataSource = this.solicitud;
-        });
-        this.solicitud=this.aux;
-      },
-      (error) => {
-        this.err = error;
-        Swal.fire({
-          title: 'Error!',
-          text: this.err.message+" status: "+this.err.status,
-          icon: 'error',
-          confirmButtonText: 'Aceptar'
-        })
+  //Realizar cuadratura Salesforce Oms
+  cuadraturaSalesforceOMS(): void {
+      this.salesforceService.cuadraturaSalesforce(this.solicitudForm.value).subscribe(
+        (data) => {
+          data.map((data: any) => {
+            this.solicitud.push(data);
+            this.dataSource = this.solicitud;
+          });
+        },
+        (error) => {
+          this.err = error;
+          Swal.fire({
+            title: 'Error!',
+            text: this.err.message+" status: "+this.err.status,
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          })
 
-      },
-      () => {
-        this.router.navigate([`dashboard/cuadraturaoms/`]);
-      }
-    );
+        },
+        () => {
+          this.router.navigate([`dashboard/cuadraturaoms/`]);
+        }
+      );
+    }
+  onFileSelect(e: any) {
+    console.log('test');
+    if (e.target.files.length > 0) {
+      const file = e.target.files[0];
+      this.solicitudForm.controls['salesforce'].setValue(file);
+    }else {
+      Swal.fire(
+        'No existe archivo adjunto'
+      )
+    }
   }
+  onFileSelect1(e: any) {
+    console.log('test');
+    if (e.target.files.length > 0) {
+      const file = e.target.files[0];
+      this.solicitudForm.controls['oms'].setValue(file);
+    }else {
+      Swal.fire(
+        'No existe archivo adjunto'
+      )
+    }
+  }
+
+
 }
 
 

@@ -1,4 +1,4 @@
-import { NgModule} from '@angular/core';
+import { NgModule, isDevMode} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 //Componentes
@@ -20,6 +20,8 @@ import { featherAirplay } from '@ng-icons/feather-icons';
 import { heroUsers } from '@ng-icons/heroicons/outline';
 import {CommonModule} from "@angular/common";
 import {CanvasJSAngularChartsModule } from "@canvasjs/angular-charts";
+import { RouterModule } from '@angular/router';
+
 
 
 @NgModule({
@@ -41,9 +43,10 @@ import {CanvasJSAngularChartsModule } from "@canvasjs/angular-charts";
     MatIconModule,
     MatButtonModule,
     BrowserModule,
+    RouterModule,
     NgIconsModule.withIcons({ featherAirplay, heroUsers }),
     CommonModule,
-    CanvasJSAngularChartsModule
+    CanvasJSAngularChartsModule,
   ],
   providers: [
   ],
