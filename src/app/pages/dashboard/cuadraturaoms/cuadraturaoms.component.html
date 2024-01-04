@@ -7,8 +7,7 @@
     </p>
     <p>Fecha Cuadratura</p>
     <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>
-    <hr />
-    <hr />
+    <!--<hr />
     <p>Archivo Salesforce</p>
     <div class="custom-file">
       <input
@@ -38,14 +37,11 @@
     <mat-error *ngIf="solicitudForm.hasError('required','certificate')">
       Certificado <span> Obligatorio</span>
     </mat-error>
-    <hr />
+    <hr />-->
+    <hr/>
     <button class="btn btn-outline-primary" (click)="cuadraturaSalesforceOMS()"> Realizar cuadratura
       <ng-icon name="heroWifi"></ng-icon>
     </button>
-    <hr />
-    <div class="file-select" id="src-file1" >
-      <input type="file" name="src-file1" aria-label="Archivo">
-    </div>
     <hr />
     <div *ngIf="dataSource === undefined">
       <p>No existen ordenes pendientes para empujar</p>

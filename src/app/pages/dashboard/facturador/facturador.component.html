@@ -9,8 +9,23 @@
     <button class="btn btn-outline-primary" (click)="login()"> Realizar cuadratura
       <ng-icon name="heroWifi"></ng-icon>
     </button>
-    <button class="btn btn-outline-primary" (click)="error()"> Buscar ordenes error
+    <button class="btn btn-outline-primary" (click)="enviarListaConPausa()" > Empujar ordenes quedadas
       <ng-icon name="heroWifi"></ng-icon>
     </button>
+    <br><br><br>
+    <div class="row text-center">
+      <div class="col-sm">
+        <form class="orden-reinject" (ngSubmit)="buscarOrden()">
+          <input [(ngModel)]="ordenInput"
+                 name="ordenEjemplo"
+                 type="text" class="form-control" placeholder="Ingrese la orden ejemplo : F00384177"
+                 aria-label="Username" aria-describedby="basic-addon1">
+          <button type="submit" class="btn btn-outline-primary" *ngIf="mostrarBotonVerificarOrden">Verificar orden
+            <ng-icon name="heroWifi"></ng-icon>
+          </button>
+        </form>
+      </div>
+    </div>
+
   </div>
 </div>
