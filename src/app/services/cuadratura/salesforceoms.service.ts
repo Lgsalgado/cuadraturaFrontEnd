@@ -31,7 +31,7 @@ export class SalesforceomsService {
     formData.append('oms',solicitud.oms)
     console.log(formData)
     // @ts-ignore
-    return this.http.post('http://localhost:8080/api/procesar-archivos',formData);
+    return this.http.post('http://localhost:8080/api/procesar-archivos');
   }
   listaProductos(): Observable<any> {
     return this.http.get(this.baseUrl2 + 'products/');

@@ -2,29 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {HttpClient, HttpHeaders, HTTP_INTERCEPTORS, HttpParams} from '@angular/common/http';
 import { TokenService} from "../session/token.service";
+import {Orden} from "../../pages/dashboard/facturador/facturador.component";
 
 
-export const orden={
-  "trxHdr": {
-    "version": "1.0",
-    "context": {
-      "idCompany": "DIFARMA",
-      "idCountry": "EC",
-      "idStore": "FYBECA",
-      "idChannel":"OMS"
-    },
-    "trxClientExecDate": "{{CURRENT_TIME}}"
-  },
-  "trxIdentify": {
-    "orderType": 1,
-    "idOrder": "",
-    "idEvent": 6319011
-  },
-  "trxInject": {
-    "type": "CONTINUE",
-    "origin": "Generar_Factura"
-  }
-}
+
 const rango={
   "status": "",
   "startDate": "01/11/2023",
@@ -52,32 +33,31 @@ export class FacturadorService {
   // @ts-ignore
   token:string= this.tokenService.getToken()
   headers = new HttpHeaders()
-    .set('X-Auth',this.token )
-    .set('Content-Length','<calculated when request is sent>');
+    .set('8f2c4087cd5d9ba126c6be31a3dcf575','' )
+
   //Apis
   facturadorReinject: string = 'https://c89bbin9ae.execute-api.us-east-1.amazonaws.com/prod/order/reinject'
-  private facturadorLogin ='http://localhost:8080/api/loginFacturador'
+  private api ='http://localhost:8080/api/'
   private facturador:string ='https://facturadorbackend.socoomni.com:8080/MTDServices/'
 
   sesion(): Observable<any> {
-    return this.http.get(this.facturadorLogin);
+    return this.http.get(this.api+"loginFacturador");
   }
 
-  errores(): Observable<any> {
-    const error={
-      "status": "",
-        "startDate": "01/11/2023",
-        "endDate": "30/11/2023",
-        "store": 4,
-        "ordenCompra": "",
-        "typeOrder": ""
-    }
-    console.log(this.headers)
-    return this.http.post(this.facturador+'errorsweb',error,{headers:this.headers});
-  }
-  empujar(): Observable<any> {
-    //console.log(httpOptions);
+
+  empujar(numeroOrden: string, idEvent: number) {
+    const requestBody = {
+      numeroOrden: numeroOrden,
+      idEvent: idEvent
+    };
+    console.log("orden: "+numeroOrden)
+    console.log("evento: "+idEvent)
     // @ts-ignore
-    return this.http.post(this.facturadorReinject,orden,httpOptions.headers,httpOptions.params);
+    return this.http.post(this.api+"reinject",requestBody);
+  }
+  searchIdEvent(numeroOrden: string){
+    const headers = { 'Content-Type': 'application/json' };
+    // @ts-ignore
+    return this.http.post(this.api+'search', numeroOrden, { headers: headers });
   }
 }
