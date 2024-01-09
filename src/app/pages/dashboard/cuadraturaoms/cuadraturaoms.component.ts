@@ -76,7 +76,7 @@ export class CuadraturaomsComponent implements OnInit {
 
   //Realizar cuadratura Salesforce Oms
   cuadraturaSalesforceOMS(): void {
-      this.salesforceService.cuadraturaSalesforce(this.solicitudForm.value).subscribe(
+      this.salesforceService.cuadraturaSalesforce().subscribe(
         (data) => {
           data.map((data: any) => {
             this.solicitud.push(data);

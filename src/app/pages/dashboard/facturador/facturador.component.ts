@@ -92,7 +92,10 @@ export class FacturadorComponent implements OnInit{
   ngOnInit(): void {
     this.model = this.calendar.getToday();
     //console.log(this.model.year)
-  }
+  }//covierte el input en mayusculas
+    convertirAMayusculas(event: any) {
+        this.ordenInput = event.toUpperCase();
+    }
   //Realizar cuadratura
   login(): void {
 
@@ -155,7 +158,15 @@ export class FacturadorComponent implements OnInit{
         concatMap(index => this.enviarOrden(-1))
       )
       .subscribe(
-        () => console.log('Orden enviada exitosamente'),
+        (response=>{
+          console.log(response)
+            Swal.fire({
+                title: 'Orden: '+this.ordenReinject.orden,
+                text: " La orden fue empujada "+response.message ,
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            })
+        }),
         error => console.error('Error al enviar orden:', error),
         () => console.log('Envío de órden completado')
       );
@@ -172,7 +183,7 @@ export class FacturadorComponent implements OnInit{
        //empujar orden
        this.empujarOrden()
        // Oculta el botón después de presionarlo
-       this.mostrarBotonVerificarOrden = false;
+       this.ordenInput="";
      }, error => {
        console.error('Error en la solicitud:', error);
        Swal.fire({

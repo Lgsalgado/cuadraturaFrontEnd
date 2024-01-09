@@ -5,10 +5,6 @@
         <strong>Empujar Ordenes Facturador:</strong> Recuerde debe validar idEvent y orden que existan.
       </ngb-alert>
     </p>
-    <p>Fecha Cuadratura</p>
-    <button class="btn btn-outline-primary" (click)="login()"> Realizar cuadratura
-      <ng-icon name="heroWifi"></ng-icon>
-    </button>
     <button class="btn btn-outline-primary" (click)="enviarListaConPausa()" > Empujar ordenes quedadas
       <ng-icon name="heroWifi"></ng-icon>
     </button>
@@ -17,6 +13,7 @@
       <div class="col-sm">
         <form class="orden-reinject" (ngSubmit)="buscarOrden()">
           <input [(ngModel)]="ordenInput"
+                 (ngModelChange)="convertirAMayusculas($event)"
                  name="ordenEjemplo"
                  type="text" class="form-control" placeholder="Ingrese la orden ejemplo : F00384177"
                  aria-label="Username" aria-describedby="basic-addon1">
