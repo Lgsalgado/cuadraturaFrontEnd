@@ -50,8 +50,7 @@ export class FacturadorService {
       numeroOrden: numeroOrden,
       idEvent: idEvent
     };
-    console.log("orden: "+numeroOrden)
-    console.log("evento: "+idEvent)
+
     // @ts-ignore
     return this.http.post(this.api+"reinject",requestBody);
   }

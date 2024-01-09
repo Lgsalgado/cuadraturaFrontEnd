@@ -25,11 +25,11 @@ export class SalesforceomsService {
   baseUrl2 = 'https://fakestoreapi.com/';
   constructor(private http: HttpClient) { }
 
-  cuadraturaSalesforce(solicitud: Solicitud): Observable<any> {
-    const formData: FormData = new FormData();
-    formData.append('salesforce',solicitud.salesforce)
-    formData.append('oms',solicitud.oms)
-    console.log(formData)
+  cuadraturaSalesforce(): Observable<any> {
+    //const formData: FormData = new FormData();
+    //formData.append('salesforce',solicitud.salesforce)
+    //formData.append('oms',solicitud.oms)
+    //console.log(formData)
     // @ts-ignore
     return this.http.post('http://localhost:8080/api/procesar-archivos');
   }
